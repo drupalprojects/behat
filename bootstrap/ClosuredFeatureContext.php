@@ -1,11 +1,4 @@
-<?php
-/**
- * TODOs
- *
- * - $world->assert instead of $world->d->assert
- * - assertions in DWTC should throw exceptions
- */
- 
+<?php 
 /**
  * GOTCHAs
  *
@@ -159,13 +152,13 @@ class ClosuredFeatureContext extends BehatContext implements ClosuredContext, Tr
      * @return  array
      */
     public function getStepDefinitionResources() {
-        // find and return all *.php files under features/steps folder
-		$steps_path = __DIR__ . '/../../../../../features/steps';
-		if (file_exists($steps_path)) {
-            $finder = new Finder();
-            return $finder->files()->name('*.php')->in($steps_path);
-        }
-        return array();
+      // find and return all *.php files under features/steps folder
+      $steps_path = __DIR__ . '/../../../../../features/steps';
+      if (file_exists($steps_path)) {
+        $finder = new Finder();
+        return $finder->files()->name('*.php')->in($steps_path);
+      }
+      return array();
     }
 
     /**
