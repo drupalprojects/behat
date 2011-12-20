@@ -23,6 +23,6 @@ INSTALLATION
    This should execute the example feature.
    
    NOTE: make sure $base_url in settings.php is set if your
-   site doesn't run under root. Otherwise, drupalPost()
-   won't work.
+   site is not accessible under http://localhost/. 
+   Otherwise, drupalPost() won't work.
    
