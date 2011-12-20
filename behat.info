@@ -1,0 +1,6 @@
+name = Behat
+description = Integrate Behat with Drupal
+package = Core
+version = VERSION
+core = 7.x
+dependencies[] = simpletest
