@@ -4,3 +4,8 @@ package = Core
 version = VERSION
 core = 7.x
 dependencies[] = simpletest
+; Information added by drupal.org packaging script on 2011-12-21
+version = "7.x-1.0"
+core = "7.x"
+project = "behat"
+datestamp = "1324484137"

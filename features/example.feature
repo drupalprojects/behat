@@ -7,11 +7,11 @@ Feature: User login
     Given a user "joe" with password "secret"
 
   Scenario: Login with valid credentials
-	  When I login as "joe" with password "secret"
-	  And I visit "/user"
-	  Then it should display "joe"
-	  
+    When I login as "joe" with password "secret"
+    And I visit "/user"
+    Then it should display "joe"
+
   Scenario: Login with invalid credentials
-	  When I login as "joe" with password "wrong"
-	  And I visit "/user"
-	  Then I should see the login form
+    When I login as "joe" with password "wrong"
+    And I visit "/user"
+    Then I should see the login form

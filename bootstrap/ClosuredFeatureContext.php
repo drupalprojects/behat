@@ -5,6 +5,9 @@
  * - $base_url in settings.php must be set if site isn't at http://localhost/
  */
 
+// TODO Don't hardcode path to features but use path specified in behat.yml
+define('FEATURES_PATH', getcwd() . '/features/');
+
 use Behat\Behat\Context\ClosuredContextInterface as ClosuredContext,
     Behat\Behat\Context\TranslatedContextInterface as TranslatedContext,
     Behat\Behat\Context\BehatContext;
@@ -16,13 +19,18 @@ if (file_exists(__DIR__ . '/../support/bootstrap.php')) {
 }
 
 class BehatWebTestCase extends DrupalWebTestCase {
+  public $users = array();
+  
   public function __call($name, array $args) {
-    // Allows us to access all protected methods from DrupalWebTestCase
+    // Lets us to access protected methods of DrupalWebTestCase
     return call_user_func_array(array($this, $name), $args);
   }
   
-  function setUp() {
-    parent::setUp();
+  function setUp($feature) {
+    require_once(FEATURES_PATH . 'setup.php');
+    $setup = behat_feature_setup($feature);
+    
+    parent::setUp($setup['modules']);
   }
   
   function tearDown() {
@@ -44,7 +52,7 @@ class BehatWebTestCase extends DrupalWebTestCase {
     // Make any step with a failing assertion stop the scenario
     // from continuing.
     if ($status == 'fail') {
-      throw new Exception('failedAssertion');
+      throw new Exception('failedAssertion: '. $message);
     }
 
     // Increment summary result counter.
@@ -83,6 +91,29 @@ class BehatWebTestCase extends DrupalWebTestCase {
     }
   }
   
+  /**
+   * Pass if the current relative page path is the given path.
+   *
+   * @param $path
+   *   The string the path should be.
+   * @param $message
+   *   Message to display.
+   * @param $group
+   *   The group this message belongs to.
+   * @return
+   *   TRUE on pass, FALSE on fail.
+   */
+  protected function assertPath($path, $message = '', $group = 'Other') {
+    global $base_url;
+    $actual = str_replace($base_url . '/', '', $this->getUrl());
+    if (!$message) {
+      $message = t('Page path @actual is equal to @expected.', array(
+        '@actual' => var_export($actual, TRUE),
+        '@expected' => var_export($path, TRUE),
+      ));
+    }
+    return $this->assertEqual($actual, $path, $message, $group);
+  }  
   /**
    * Custom Simpletest API methods
    */
@@ -153,7 +184,7 @@ class ClosuredFeatureContext extends BehatContext implements ClosuredContext, Tr
      */
     public function getStepDefinitionResources() {
       // find and return all *.php files under features/steps folder
-      $steps_path = __DIR__ . '/../../../../../features/steps';
+      $steps_path = FEATURES_PATH . 'steps';
       if (file_exists($steps_path)) {
         $finder = new Finder();
         return $finder->files()->name('*.php')->in($steps_path);
