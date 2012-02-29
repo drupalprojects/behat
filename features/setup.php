@@ -10,5 +10,7 @@ function behat_feature_setup($name = '') {
     ),
   );
   
-  return (!empty($name)) ? $setup[$name] : $setup;
+  // If no modules have been specified for the given feature,
+  // return an empty array of modules.
+  return (!empty($name) && isset($setup[$name])) ? $setup[$name] : array('modules' => array());
 }
