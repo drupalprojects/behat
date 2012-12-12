@@ -1,22 +1,37 @@
 INSTALLATION
 ============
 
-1) Install behat on your machine following these instructions:
+1) Download and enable this module on your Drupal site
+
+2) Install behat on your machine following these instructions:
    http://docs.behat.org/quick_intro.html#installation
    
-2) Copy file "behat.yml" and directory "features" to 
+3) Copy file "behat.yml" and directory "features" to 
    site root directory.
    
-3) Customize the path to "behat/bootstrap" in behat.yml
+4) Customize the path to "behat/bootstrap" in behat.yml
    if the behat module isn't located at "sites/all/modules/behat"
    
-4) Set $base_url in settings.php if your site is not 
+5) Set $base_url in settings.php if your site is not 
    accessible at http://localhost/ 
    (otherwise drupalPost() won't work)
    
-5) Test if behat is set up correctly and switch to the shell, 
+   There's no way yet to tell Behat to run a specific site within
+   a multisite setup. 
+   Make sure that sites/default/settings.php exists, otherwise 
+   behat will exit without an error message.
+   
+6) Test if behat is set up correctly and switch to the shell, 
    change to the Drupal root directory and run:
    
    $ behat
    
    This should execute the example feature.
+
+
+TROUBLESHOOTING
+===============
+
+If you get the error "Base table or view not found: 1146 Table 'drupal.simpletest_test_id'", make sure you have enabled the behat module on your test site.
+
+If you get the error "Context class "ClosuredFeatureContext" not found and can not be instantiated", "%%BEHAT_CONFIG_PATH%%" might not be resolving in /path/to/drupal/behat.yml. You might have to replace %%BEHAT_CONFIG_PATH%% with your /path/to/drupal.
